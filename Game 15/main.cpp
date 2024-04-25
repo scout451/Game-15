@@ -84,7 +84,7 @@ void CreateFieldComp()
                 if (CurrNum > Nums[j])
                     Chaos++;
         }
-        if (Chaos % 1 == 0)
+        if (Chaos % 2 == 0)
         {
             int temp = Nums[7];
             Nums[7] = Nums[6];
