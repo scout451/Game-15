@@ -7,11 +7,8 @@ using namespace std;
 int Field[4][4];
 int pointX, pointY;
 
-void CreateFieldComp()
+void CreateFieldComp(int sizeField)
 {
-    int sizeField;
-    cout << "Vibirite razmer polya: ";
-    cin >> sizeField;
     if(sizeField==16)
     {
         bool NumIsFree[15];
@@ -178,22 +175,34 @@ void Move(Direction dir)
     }
 }
 
-bool FieldIsCorrect()
+bool FieldIsCorrect(int sizeField)
 {
-    for (int i = 0; i < 15; i++)
-        if (Field[i % 4][i / 4] != i + 1)
-            return false;
-    return true;
+    if(sizeField == 16)
+    {
+        for (int i = 0; i < 15; i++)
+            if (Field[i % 4][i / 4] != i + 1)
+                return false;
+        return true;
+    }
+    if (sizeField == 9)
+    {
+        for (int i = 0; i < 8; i++)
+            if (Field[i % 3][i / 3] != i + 1)
+                return false;
+        return true;
+    }
 }
-
 
 void main()
 {
+    int sizeField;
+    cout << "Select field size: 16 (4x4) or 9 (3x3): ";
+    cin >> sizeField;
     int counter = 0;
     int startTime = clock() / 1000.0 / 60.0;
-    CreateFieldComp();
+    CreateFieldComp(sizeField);
     DrawField();
-    while (!FieldIsCorrect())
+    while (!FieldIsCorrect(sizeField))
     {
         switch (_getch())
         {
