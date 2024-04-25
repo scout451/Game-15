@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ctime>
+#include <conio.h>
 
 using namespace std;
 
@@ -91,7 +92,7 @@ void Move(Direction dir)
 {
     switch (dir)
     {
-    case LEFT:
+    case Direction::LEFT:
     {
         if (pointX > 0)
         {
@@ -100,7 +101,7 @@ void Move(Direction dir)
             pointX--;
         }
     } break;
-    case UP:
+    case Direction::UP:
     {
         if (pointY > 0)
         {
@@ -109,7 +110,7 @@ void Move(Direction dir)
             pointY--;
         }
     } break;
-    case RIGHT:
+    case Direction::RIGHT:
     {
         if (pointX < 3)
         {
@@ -118,7 +119,7 @@ void Move(Direction dir)
             pointX++;
         }
     } break;
-    case DOWN:
+    case Direction::DOWN:
     {
         if (pointY < 3)
         {
@@ -145,28 +146,26 @@ void main()
     int startTime = clock() / 1000.0 / 60.0;
     CreateFieldComp();
     DrawField();
-    char choice;
     while (!FieldIsCorrect())
     {
-        cin >> choice;
-        switch (choice)
+        switch (_getch())
         {
-        case 76: 
-            Move(LEFT);
+        case 72:
+            Move(Direction::UP);
             counter++;
             break;
-        case 85: 
-            Move(UP);
+        case 80:
+            Move(Direction::DOWN);
             counter++;
             break;
-        case 82: 
-            Move(RIGHT);
+        case 75:
+            Move(Direction::LEFT);
             counter++;
             break;
-        case 68: 
-            Move(DOWN);
+        case 77:
+            Move(Direction::RIGHT);
             counter++;
-            break;
+            break;;
         }
         DrawField();
     }
