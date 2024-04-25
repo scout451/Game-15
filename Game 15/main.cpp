@@ -7,47 +7,94 @@ using namespace std;
 int Field[4][4];
 int pointX, pointY;
 
-
 void CreateFieldComp()
 {
-    bool NumIsFree[15];
-    int Nums[15];
-    for (int i = 0; i < 15; i++)
-        NumIsFree[i] = true;
-    srand(time(0));
-    bool Ok;
-    int RandNum;
-    for (int i = 0; i < 15; i++)
+    int sizeField;
+    cout << "Vibirite razmer polya: ";
+    cin >> sizeField;
+    if(sizeField==16)
     {
-        Ok = false;
-        while (!Ok)
+        bool NumIsFree[15];
+        int Nums[15];
+        for (int i = 0; i < 15; i++)
+            NumIsFree[i] = true;
+        srand(time(0));
+        bool Ok;
+        int RandNum;
+        for (int i = 0; i < 15; i++)
         {
-            RandNum = rand() % 15 + 1;
-            if (NumIsFree[RandNum - 1])
-                Ok = true;
+            Ok = false;
+            while (!Ok)
+            {
+                RandNum = rand() % 15 + 1;
+                if (NumIsFree[RandNum - 1])
+                    Ok = true;
+            }
+            Nums[i] = RandNum;
+            NumIsFree[RandNum - 1] = false;
         }
-        Nums[i] = RandNum;
-        NumIsFree[RandNum - 1] = false;
+        int Chaos = 0;
+        int CurrNum;
+        for (int i = 0; i < 14; i++)
+        {
+            CurrNum = Nums[i];
+            for (int j = i + 1; j < 15; j++)
+                if (CurrNum > Nums[j])
+                    Chaos++;
+        }
+        if (Chaos % 2 == 1)
+        {
+            int temp = Nums[13];
+            Nums[13] = Nums[14];
+            Nums[14] = temp;
+        }
+        for (int i = 0; i < 15; i++)
+            Field[i % 4][i / 4] = Nums[i];
+        Field[3][3] = 0;
+        pointX = 3; pointY = 3;
     }
-    int Chaos = 0;
-    int CurrNum;
-    for (int i = 0; i < 14; i++)
+    
+    if (sizeField == 9)
     {
-        CurrNum = Nums[i];
-        for (int j = i + 1; j < 15; j++)
-            if (CurrNum > Nums[j])
-                Chaos++;
+        bool NumIsFree[8];
+        int Nums[8];
+        for (int i = 0; i < 8; i++)
+            NumIsFree[i] = true;
+        srand(time(0));
+        bool Ok;
+        int RandNum;
+        for (int i = 0; i < 8; i++)
+        {
+            Ok = false;
+            while (!Ok)
+            {
+                RandNum = rand() % 8 + 1;
+                if (NumIsFree[RandNum - 1])
+                    Ok = true;
+            }
+            Nums[i] = RandNum;
+            NumIsFree[RandNum - 1] = false;
+        }
+        int Chaos = 0;
+        int CurrNum;
+        for (int i = 0; i < 7; i++)
+        {
+            CurrNum = Nums[i];
+            for (int j = i + 1; j < 8; j++)
+                if (CurrNum > Nums[j])
+                    Chaos++;
+        }
+        if (Chaos % 1 == 0)
+        {
+            int temp = Nums[7];
+            Nums[7] = Nums[6];
+            Nums[6] = temp;
+        }
+        for (int i = 0; i < 8; i++)
+            Field[i % 3][i / 3] = Nums[i];
+        Field[2][2] = 0;
+        pointX = 2; pointY = 2;
     }
-    if (Chaos % 2 == 1)
-    {
-        int temp = Nums[13];
-        Nums[13] = Nums[14];
-        Nums[14] = temp;
-    }
-    for (int i = 0; i < 15; i++)
-        Field[i % 4][i / 4] = Nums[i];
-    Field[3][3] = 0;
-    pointX = 3; pointY = 3;
 }
 
 void DrawField()
