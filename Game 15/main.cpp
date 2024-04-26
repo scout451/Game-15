@@ -4,8 +4,8 @@
 
 using namespace std;
 
-
 int Field[4][4];
+int Field9[3][3];
 int pointX, pointY;
 
 void CreateFieldComp(int sizeField)
@@ -89,49 +89,129 @@ void CreateFieldComp(int sizeField)
             Nums[6] = temp;
         }
         for (int i = 0; i < 8; i++)
-            Field[i % 3][i / 3] = Nums[i];
-        Field[2][2] = 0;
+            Field9[i % 3][i / 3] = Nums[i];
+        Field9[2][2] = 0;
         pointX = 2; pointY = 2;
     }
 }
 
-void DrawField()
+void DrawField(int sizeField)
 {
     system("cls");
-    for (int j = 0; j < 4; j++)
+    if(sizeField == 16)
     {
-        for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
         {
-            if (Field[i][j])
-                cout << "++++";
-            else
-                cout << "    ";
-        }
-        cout << endl;
-        for (int i = 0; i < 4; i++)
-        {
-            if (Field[i][j])
+            for (int i = 0; i < 4; i++)
             {
-                cout << "+";
-                cout.width(2);
-                cout << Field[i][j] << "+";
+                if (Field[i][j])
+                    cout << "++++";
+                else
+                    cout << "    ";
             }
-            else
-                cout << "    ";
+            cout << endl;
+            for (int i = 0; i < 4; i++)
+            {
+                if (Field[i][j])
+                {
+                    cout << "+";
+                    cout.width(2);
+                    cout << Field[i][j] << "+";
+                }
+                else
+                    cout << "    ";
+            }
+            cout << endl;
+            for (int i = 0; i < 4; i++)
+            {
+                if (Field[i][j])
+                    cout << "++++";
+                else
+                    cout << "    ";
+            }
+            cout << endl;
         }
-        cout << endl;
-        for (int i = 0; i < 4; i++)
+    }
+    if (sizeField == 9)
+    {
+        for (int j = 0; j < 3; j++)
         {
-            if (Field[i][j])
-                cout << "++++";
-            else
-                cout << "    ";
+            for (int i = 0; i < 3; i++)
+            {
+                if (Field9[i][j])
+                    cout << "++++";
+                else
+                    cout << "    ";
+            }
+            cout << endl;
+            for (int i = 0; i < 3; i++)
+            {
+                if (Field9[i][j])
+                {
+                    cout << "+";
+                    cout.width(2);
+                    cout << Field9[i][j] << "+";
+                }
+                else
+                    cout << "    ";
+            }
+            cout << endl;
+            for (int i = 0; i < 3; i++)
+            {
+                if (Field9[i][j])
+                    cout << "++++";
+                else
+                    cout << "    ";
+            }
+            cout << endl;
         }
-        cout << endl;
     }
 }
 
 enum Direction { LEFT, UP, RIGHT, DOWN };
+
+void Move9(Direction dir)
+{
+    switch (dir)
+    {
+    case Direction::LEFT:
+    {
+        if (pointX > 0)
+        {
+            Field9[pointX][pointY] = Field9[pointX - 1][pointY];
+            Field9[pointX - 1][pointY] = 0;
+            pointX--;
+        }
+    } break;
+    case Direction::UP:
+    {
+        if (pointY > 0)
+        {
+            Field9[pointX][pointY] = Field9[pointX][pointY - 1];
+            Field9[pointX][pointY - 1] = 0;
+            pointY--;
+        }
+    } break;
+    case Direction::RIGHT:
+    {
+        if (pointX < 2)
+        {
+            Field9[pointX][pointY] = Field9[pointX + 1][pointY];
+            Field9[pointX + 1][pointY] = 0;
+            pointX++;
+        }
+    } break;
+    case Direction::DOWN:
+    {
+        if (pointY < 2)
+        {
+            Field9[pointX][pointY] = Field9[pointX][pointY + 1];
+            Field9[pointX][pointY + 1] = 0;
+            pointY++;
+        }
+    } break;
+    }
+}
 
 void Move(Direction dir)
 {
@@ -214,36 +294,49 @@ void main()
     cout << "Select field size: 16 (4x4) or 9 (3x3): ";
     cin >> sizeField;
     int counter = 0;
-    int startTime = clock() / 1000.0 / 60.0;
+    int startTime = clock() / 100.0;
     CreateFieldComp(sizeField);
-    DrawField();
+    DrawField(sizeField);
+    
     while (!FieldIsCorrect(sizeField))
     {
         switch (_getch())
         {
         case 72:
-            Move(Direction::UP);
+            if(sizeField == 16)
+                Move(Direction::UP);
+            if(sizeField == 9)
+                Move9(Direction::UP);
             counter++;
             break;
         case 80:
-            Move(Direction::DOWN);
+            if (sizeField == 16)
+                Move(Direction::DOWN);
+            if (sizeField == 9)
+                Move9(Direction::DOWN);
             counter++;
             break;
         case 75:
-            Move(Direction::LEFT);
+            if (sizeField == 16)
+                Move(Direction::LEFT);
+            if (sizeField == 9)
+                Move9(Direction::LEFT);
             counter++;
             break;
         case 77:
-            Move(Direction::RIGHT);
+            if (sizeField == 16)
+                Move(Direction::RIGHT);
+            if (sizeField == 9)
+                Move9(Direction::RIGHT);
             counter++;
-            break;;
+            break;
         }
-        DrawField();
+        DrawField(sizeField);
     }
-    int endTime = clock() / 1000.0 / 60.0;
+    int endTime = clock() / 100.0;
     int time = endTime - startTime;
     cout << endl << endl;
-    cout << "Congratulations! It took " << counter << " shifts and " << time << " mins." << endl;
+    cout << "Congratulations! It took " << counter << " shifts and " << (time / 60) << " mins." << endl;
     cout << "Press Enter to exit!" << endl;
     cin.get();
     system("pause");
