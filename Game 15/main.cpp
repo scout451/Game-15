@@ -4,6 +4,7 @@
 
 using namespace std;
 
+
 int Field[4][4];
 int pointX, pointY;
 
@@ -175,21 +176,35 @@ void Move(Direction dir)
     }
 }
 
-bool FieldIsCorrect(int sizeField)
+bool FieldIsCorrect(int sizeField) 
 {
+    int count = 0;
     if(sizeField == 16)
     {
-        for (int i = 0; i < 15; i++)
-            if (Field[i % 4][i / 4] != i + 1)
-                return false;
-        return true;
+        int proverka = 1;
+        for (int i = 3; i != (-1); i--)
+        {
+            for (int j = 0; j < 4; j++)
+                if (Field[j][i] == proverka++)
+                    count++;
+        }
+        if (count == 15) return true;
+        count = 0;
+        return false;
     }
+
     if (sizeField == 9)
     {
-        for (int i = 0; i < 8; i++)
-            if (Field[i % 3][i / 3] != i + 1)
-                return false;
-        return true;
+        int proverka = 1;
+        for (int i = 2; i != (-1); i--)
+        {
+            for (int j = 0; j < 3; j++)
+                if (Field[j][i] == proverka++)
+                    count++;
+        }
+        if (count == 8) return true;
+        count = 0;
+        return false;
     }
 }
 
